@@ -360,10 +360,10 @@ const createCongrats = (section, x, y, i) => {
     creElm(section, 'div', '', 'congrats', 'style', `top:${x}%;left:${y}%;`);
     let ithCongrats = document.querySelectorAll('.congrats');
     ithCongrats[i].innerHTML = `
-<img class="ship" src="./images/spaceShuttle.png" alt="">
+<img class="ship" src="./images/spaceShuttle.png" title="https://www.vhv.rs/viewpic/hobhohT_sci-fi-art-png-clipart-sci-fi-starship/">
 <div class="explosions">
-    <img class="explosion1" src="./images/explosion.png" alt="">
-    <img class="explosion2" src="./images/explosion.png" alt="">
+    <img class="explosion1" src="./images/explosion.png" title="https://www.pngitem.com/middle/hmhmbJm_explosion-png-download-explosion-transparent-png/">
+    <img class="explosion2" src="./images/explosion.png" title="https://www.pngitem.com/middle/hmhmbJm_explosion-png-download-explosion-transparent-png/">
 </div>
 <div class="targets">
     <img class="target1" src="./images/targetMark.svg" title="http://www.onlinewebfonts.com">
