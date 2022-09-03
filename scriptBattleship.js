@@ -14,25 +14,13 @@ const section1 = document.querySelectorAll('section')[0];
 // ~~~~~~~~~~~~~~~~~~ CREATE BOAT COORDINATES ~~~~~~~~~~~~~~~~~~
 let boatCoor, rotaCase, count=0, wincount=0;
 
-/**
- * This is to create an array which has the length of the parameter x.
- * @param {number} x any number
- * @returns [1, 2, 3, ..., x]
- */
-const arrCreator = (x) => {
-    let arr = [];
-    for(let i=0; i<x; i++) {
-        arr.push(i+1);
-    }
-    return arr;
-}
 
 /**
  * This is to pick a random item from an array.
  * @param {array} x any array
  * @returns random item from the argument array
  */
-const rdmNumGen = (x) => {
+const pickRandom = (x) => {
     let rand = Math.floor(Math.random()*x.length); 
     let rValue = x[rand]; 
 
@@ -45,9 +33,10 @@ const rdmNumGen = (x) => {
  * @returns [number, number]
  */
 const boatHead = (x) => {
-    x = arrCreator(x);
-    let res = [rdmNumGen(x)];
-    res.push(rdmNumGen(x));
+    let arr = [];
+    for(let i=0; i<x; i++) arr.push(i+1);
+    let res = [pickRandom(arr)];
+    res.push(pickRandom(arr));
 
     return res;
 }
@@ -70,7 +59,7 @@ const boatTail = (x,y) => {
             // console.log(check + '  is removed');
         }
     }
-    let result = rdmNumGen(res)
+    let result = pickRandom(res)
     if(result[0] == A-1 && result[1] == B) rotaCase = 'rotaB';
     else if(result[0] == A && result[1] == B+1) rotaCase = 'rotaC';
     else if(result[0] == A && result[1] == B-1) rotaCase = 'rotaD';
@@ -130,6 +119,7 @@ const creElm =(prnt, tagN, inner, clsN, att1, val1, att2, val2)=> {
 }
 
 
+
 //~~~~~~~~~~~~~~~~~~ COORDINATES MATCH ~~~~~~~~~~~~~~~~~~
 
 /**
@@ -170,14 +160,8 @@ const getAttributeData = (x) => {
 const boatAt = (i) => {     
     let x = getAttributeData(span[i]);
     if (x[0]) {
-        if (x[1] == 1) {
-            span[i].id = 'bHead';
-            span[i].className = rotaCase;
-        }
-        if (x[1] == 2) {
-            span[i].id = 'bTail';
-            span[i].className = rotaCase;
-        }
+        span[i].className = rotaCase;
+        span[i].id = x[1] == 1? 'bHead':'bTail';
     }
 }
 
@@ -186,7 +170,7 @@ const boatAt = (i) => {
  * @param {*} e refers to the event object
  */
 const mOver = (e) => {          //~~~~~~~~~~~~~~~~~~ mouse enter -> display ? mark
-    creElm(e.target, 'img', '', 'mOver', 'src', marks[0])
+    creElm(e.target, 'img', '', 'mOver', 'src', marks[0]);
 }
 
 /**
@@ -196,7 +180,7 @@ const mOver = (e) => {          //~~~~~~~~~~~~~~~~~~ mouse enter -> display ? ma
 const mOff = (e) => {
     setTimeout(() => {
         e.target.innerHTML = "";
-    }, 200)     // 0.2초 후에 위 코드를 실행요청
+    }, 200);
 }
 
 /**
@@ -284,7 +268,7 @@ const gameOver = (x) => {
         button[0].addEventListener("click", gamePlay);
         button[0].innerHTML = x? 'LEVEL UP':'REPLAY';
         document.querySelector("#game img").id = 'float';
-        starter.classList.remove('hidden');    // Play 버튼 레이어 호출
+        starter.classList.remove('hidden');
     } else {
         setTimeout(() => {
             document.getElementById('winner').innerHTML='END OF GAME';
@@ -298,12 +282,6 @@ const gameOver = (x) => {
     }
 }
 
-/**
- * This is to clear all the spans for next game
- */
-const boatOff = () => {
-    flxCtn.innerHTML='';
-}
 
 
 //~~~~~~~~~~~~~~~~~~ PLAY ~~~~~~~~~~~~~~~~~~
@@ -312,15 +290,14 @@ const boatOff = () => {
  * When the user presses on Play button, gameStart function will be executed after the following happens
  * 1) If after a cycle of 5 levels, remove the section with congratulations animation and stop the interval animation.
  * 2) If the 1st trial, show starting animation of the battleship flying away into the screen.
- * 3) If after the 1st trial, execute boatOff function.
+ * 3) If after the 1st trial, clear all the spans in the container for next game.
  */
 const gamePlay = () => {
-    console.log(`You tried ${count +1} time(s)!`)
     if(button.length>1) {
         document.querySelectorAll('section')[0].remove();
         endCongrats();
     }
-    count ==0 ? document.querySelector("#float").id = 'fly':boatOff();
+    count ==0 ? document.querySelector("#float").id = 'fly':flxCtn.innerHTML='';
     gameStart(count, 5+wincount);
     count ++;
 }
@@ -331,16 +308,17 @@ button[0].addEventListener("click", gamePlay);
 
 // do some decoration~~
 
-const bgImg = [`url(https://www.nasa.gov/sites/default/files/styles/full_width_feature/public/thumbnails/image/main_image_star-forming_region_carina_nircam_final-5mb.jpg)`, `url(https://www.nasa.gov/sites/default/files/styles/full_width_feature/public/thumbnails/image/main_image_deep_field_smacs0723-5mb.jpg)`];
+const bgImgs = [`url(https://www.nasa.gov/sites/default/files/styles/full_width_feature/public/thumbnails/image/main_image_star-forming_region_carina_nircam_final-5mb.jpg)`, `url(https://www.nasa.gov/sites/default/files/styles/full_width_feature/public/thumbnails/image/main_image_deep_field_smacs0723-5mb.jpg)`];
 
-document.querySelector('body').style.background = navigator.onLine ? `${rdmNumGen(bgImg)} center center / cover`:'black';
+document.querySelector('body').style.background = `${pickRandom(bgImgs)} center center / cover`;
+if(!navigator.onLine) document.querySelector('body').style.background = 'black';
 
-const txt = ['HOW', 'LUCKY', 'ARE', 'YOU?', 'JUST', 'TRY', 'YOUR', 'LUCK!'];
+const txts = ['HOW', 'LUCKY', 'ARE', 'YOU?', 'JUST', 'TRY', 'YOUR', 'LUCK!'];
 const mvTxt = document.querySelector('#walking');
 
 for(let i=0; i<3; i++){
-    for(let j=0; j<txt.length; j++) {
-        creElm(mvTxt, 'p', txt[j]);
+    for(let j=0; j<txts.length; j++) {
+        creElm(mvTxt, 'p', txts[j]);
     }
 }
 

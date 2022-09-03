@@ -64,7 +64,7 @@
             16%{background-image: linear-gradient(to right, orange, yellow, green, blue, indigo, purple, red);}
             32%{background-image: linear-gradient(to right, yellow, green, blue, indigo, purple, red, orange);}
             48%{background-image: linear-gradient(to right, green, blue, indigo, purple, red, orange, yellow);}
-            64%{background-image: linear-gradient(to right, blue, indigo, purple, red, orange, yellow, green, );}
+            64%{background-image: linear-gradient(to right, blue, indigo, purple, red, orange, yellow, green);}
             80%{background-image: linear-gradient(to right, indigo, purple, red, orange, yellow, green, blue);}
             100%{background-image: linear-gradient(to right, purple, red, orange, yellow, green, blue, indigo);}
         }
@@ -73,8 +73,6 @@
             backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
             position: absolute;
-            width: 510px;
-            height: 510px;
             overflow: hidden;
         }
         #game.hidden {
@@ -277,7 +275,6 @@
         }
 
         section {
-            /* display: none; */
             margin: 0;
             position: absolute;
             left:0;
@@ -287,6 +284,21 @@
             z-index: 50;
             background-color: rgba(0,0,0,0.8);
         }
+        /* section::before {
+            background: url(https://www.esa.int/var/esa/storage/images/esa_multimedia/images/2022/08/heart_of_the_phantom_galaxy/24419865-1-eng-GB/Heart_of_the_Phantom_Galaxy_pillars.jpg) center center / cover;
+            position: absolute;
+            top:-50%;
+            left:-50%;
+            width: 200%;
+            height: 200%;
+            content: '';
+            opacity: 0.5;
+            animation: swirling 15s linear infinite;
+        }
+        @keyframes swirling {
+            from {}
+            to {transform: rotate(-360deg);}
+        } */
         .congrats, .ship, .explosions, .explosion1, .explosion2, .targets, .target1, .target2 {
             position: absolute;
         }
@@ -381,7 +393,7 @@
         </h1>
         <div class="ctnr">
             <div></div>
-            <div id="game">
+            <div id="game" class="ctnr">
                 <div>
                     <h2>Find the Target :<br><strong>MOTANIKA 21</strong></h2>
                     <img id="float" src="./images/spaceShuttle.png" alt="" title="https://www.vhv.rs/viewpic/hobhohT_sci-fi-art-png-clipart-sci-fi-starship/">
