@@ -66,8 +66,7 @@ const boatTail = (x,y) => {
 const putBoat = (x) => {
     room(x);
     let bH = boatHead(x);
-    let bT = boatTail(bH,x);
-    boatCoor = [bH, bT];    //~~~~~~~~~~~~~~~~~~ BOAT COORDINATES RESULT
+    boatCoor = [bH, boatTail(bH,x)];    //~~~~~~~~~~~~~~~~~~ BOAT COORDINATES RESULT
 }
 
 /**
