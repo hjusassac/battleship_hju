@@ -33,10 +33,7 @@ const pickRandom = (x) => {
 const boatHead = (x) => {
     let arr = [];
     for(let i=0; i<x; i++) arr.push(i+1);
-    let res = [pickRandom(arr)];
-    res.push(pickRandom(arr));
-
-    return res;
+    return [pickRandom(arr), pickRandom(arr)];
 }
 
 /**
@@ -46,24 +43,19 @@ const boatHead = (x) => {
  * @returns [number, number]
  */
 const boatTail = (x,y) => {
-    let A = x[0], B = x[1]; // [A,B]
+    let A = x[0], B = x[1]; // x=[A,B]
     let res = [[A+1, B], [A-1, B], [A, B+1], [A, B-1]];
     for(let i=3; i>=0; i--) {
-        // console.log(`for ${y} by ${y}, running`);
-        let check = res[i];
-        let bTX = check[0], btY = check[1];
-        if(bTX*btY == 0 || bTX == y+1 || btY == y+1) {
-            res.splice(i,1);
-            // console.log(check + '  is removed');
-        }
+        let bt = res[i];
+        if(bt[0]*bt[1]*(bt[0]-(y+1))*(bt[1]-(y+1)) == 0) res.splice(i,1);
     }
-    let result = pickRandom(res)
-    if(result[0] == A-1 && result[1] == B) rotaCase = 'rotaB';
-    else if(result[0] == A && result[1] == B+1) rotaCase = 'rotaC';
-    else if(result[0] == A && result[1] == B-1) rotaCase = 'rotaD';
+    x = pickRandom(res)
+    if(x[0] == A-1 && x[1] == B) rotaCase = 'rotaB';
+    else if(x[0] == A && x[1] == B+1) rotaCase = 'rotaC';
+    else if(x[0] == A && x[1] == B-1) rotaCase = 'rotaD';
     else rotaCase = '';
 
-    return result;
+    return x;
 }
 
 /**
@@ -73,7 +65,7 @@ const boatTail = (x,y) => {
  */
 const putBoat = (x) => {
     room(x);
-    let bH = boatHead(x)
+    let bH = boatHead(x);
     let bT = boatTail(bH,x);
     boatCoor = [bH, bT];    //~~~~~~~~~~~~~~~~~~ BOAT COORDINATES RESULT
 }
@@ -84,14 +76,9 @@ const putBoat = (x) => {
  */
 const room = (x) => {
     for(let i=1; i<x+1; i++) {
-        for(let j=1; j<x+1; j++){
-            creElm(flxCtn, 'span', '', '', 'data-x', j, 'data-y', i);
-        }
+        for(let j=1; j<x+1; j++) creElm(flxCtn, 'span', '', '', 'data-x', j, 'data-y', i);
     }
-    for(let i=0; i<span.length; i++) {      // give the span right size
-        span[i].style.width = `-webkit-calc((510px/${x} - 2px))`;
-        span[i].style.height = `-webkit-calc((510px/${x} - 2px))`;
-    }
+    for(let i=0; i<span.length; i++) span[i].style.width = `-webkit-calc((510px/${x} - 2px))`;
 }
 
 /**
@@ -122,20 +109,20 @@ const creElm =(prnt, tagN, inner, clsN, att1, val1, att2, val2)=> {
 
 /**
  * This will check if the input matches with the given coordinates from putBoat function.
- * The return will be [false, ''] or [true, 1] if x matches with boatHead or [true, 2] if x matches with boatTail
+ * The return can be 
+ * 1) [false, false]
+ * 2) [true, true] if x matches with boatHead
+ * 3) [true, false] if x matches with boatTail
  * @param {array} x [number, number]
- * @returns [boolean, '' | number]
+ * @returns [boolean, boolean]
  */
 const inputValidator = (x) => {
-    let res = false, boatH = '';
+    let res = false, boatH = false;
     if(x[0] == boatCoor[0][0] && x[1] == boatCoor[0][1]) {
         res = true;
-        boatH = 1;
+        boatH = true;
     }
-    else if(x[0] == boatCoor[1][0] && x[1] == boatCoor[1][1]) {
-        res = true;
-        boatH = 2;
-    }
+    else if(x[0] == boatCoor[1][0] && x[1] == boatCoor[1][1]) res = true;
     return [res, boatH];
 }
 
@@ -159,7 +146,7 @@ const boatAt = (i) => {
     let x = getAttributeData(span[i]);
     if (x[0]) {
         span[i].className = rotaCase;
-        span[i].id = x[1] == 1? 'bHead':'bTail';
+        span[i].id = x[1]? 'bHead':'bTail';
     }
 }
 
@@ -176,9 +163,7 @@ const mOver = (e) => {          //~~~~~~~~~~~~~~~~~~ mouse enter -> display ? ma
  * @param {*} e refers to the event object
  */
 const mOff = (e) => {
-    setTimeout(() => {
-        e.target.innerHTML = "";
-    }, 200);
+    setTimeout(() => {e.target.innerHTML = "";}, 200);
 }
 
 /**
@@ -309,15 +294,13 @@ button[0].addEventListener("click", gamePlay);
 const bgImgs = [`url(https://www.nasa.gov/sites/default/files/styles/full_width_feature/public/thumbnails/image/main_image_star-forming_region_carina_nircam_final-5mb.jpg)`, `url(https://www.nasa.gov/sites/default/files/styles/full_width_feature/public/thumbnails/image/main_image_deep_field_smacs0723-5mb.jpg)`];
 
 document.querySelector('body').style.background = `${pickRandom(bgImgs)} center center / cover`;
-if(!navigator.onLine) document.querySelector('body').style.background = 'black';
+if(!navigator.onLine) document.querySelector('body').style.backgroundColor = 'black';
 
 const txts = ['HOW', 'LUCKY', 'ARE', 'YOU?', 'JUST', 'TRY', 'YOUR', 'LUCK!'];
 const mvTxt = document.querySelector('#walking');
 
 for(let i=0; i<3; i++){
-    for(let j=0; j<txts.length; j++) {
-        creElm(mvTxt, 'p', txts[j]);
-    }
+    for(let j=0; j<txts.length; j++) creElm(mvTxt, 'p', txts[j]);
 }
 
 
@@ -333,21 +316,18 @@ for(let i=0; i<3; i++){
  * @param {number} i THis is to refer to last div element.
  */
 const createCongrats = (section, x, y, i) => {
-    creElm(section, 'div', '', 'congrats', 'style', `top:${x}%;left:${y}%;`);
-    let ithCongrats = document.querySelectorAll('.congrats');
-    ithCongrats[i].innerHTML = `
-<img class="ship" src="./images/spaceShuttle.png" title="https://www.vhv.rs/viewpic/hobhohT_sci-fi-art-png-clipart-sci-fi-starship/">
-<div class="explosions">
-    <img class="explosion1" src="./images/explosion.png" title="https://www.pngitem.com/middle/hmhmbJm_explosion-png-download-explosion-transparent-png/">
-    <img class="explosion2" src="./images/explosion.png" title="https://www.pngitem.com/middle/hmhmbJm_explosion-png-download-explosion-transparent-png/">
-</div>
-<div class="targets">
-    <img class="target1" src="./images/targetMark.svg" title="http://www.onlinewebfonts.com">
-    <img class="target2" src="./images/targetMark2.svg" title="http://www.onlinewebfonts.com">
-</div>`
-    if(i>3) {
-        ithCongrats[0].remove();
-    }
+    let inH = `
+    <img class="ship" src="./images/spaceShuttle.png" title="https://www.vhv.rs/viewpic/hobhohT_sci-fi-art-png-clipart-sci-fi-starship/">
+    <div class="explosions">
+        <img class="explosion1" src="./images/explosion.png" title="https://www.pngitem.com/middle/hmhmbJm_explosion-png-download-explosion-transparent-png/">
+        <img class="explosion2" src="./images/explosion.png" title="https://www.pngitem.com/middle/hmhmbJm_explosion-png-download-explosion-transparent-png/">
+    </div>
+    <div class="targets">
+        <img class="target1" src="./images/targetMark.svg" title="http://www.onlinewebfonts.com">
+        <img class="target2" src="./images/targetMark2.svg" title="http://www.onlinewebfonts.com">
+    </div>`;
+    creElm(section, 'div', inH, 'congrats', 'style', `top:${x}%;left:${y}%;`);
+    if(i>3) document.querySelector('.congrats').remove();
 }
 let startCongrats;
 /**
@@ -357,10 +337,10 @@ let startCongrats;
 const congratsAnimation = (sec) => {
     let x, y, iter = 0;
     startCongrats = setInterval(() => {
-            x = Math.floor(Math.random()*101)-10;
-            y = Math.floor(Math.random()*90)-25;
-            createCongrats(sec, x,y,iter);
-            if(iter<4) iter++;
+        x = Math.floor(Math.random()*101)-10;
+        y = Math.floor(Math.random()*90)-25;
+        createCongrats(sec, x,y,iter);
+        if(iter<4) iter++;
     }, 1200)
 }
 /**
