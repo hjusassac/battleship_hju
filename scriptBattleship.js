@@ -22,9 +22,7 @@ let boatCoor, rotaCase, count=0, wincount=0;
  */
 const pickRandom = (x) => {
     let rand = Math.floor(Math.random()*x.length); 
-    let rValue = x[rand]; 
-
-    return rValue;
+    return x[rand];
 }
 
 /**
