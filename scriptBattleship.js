@@ -204,7 +204,7 @@ const gameStart =(x, y)=> {
     if(x!=0) x=200;
     setTimeout(() => {
         starter.classList.add('hidden');    // Play 버튼 레이어 숨김
-        document.querySelector('#walking + div p').innerHTML = `LEVEL ${wincount+1}`;
+        document.querySelector('#hola + div p').innerHTML = `LEVEL ${wincount+1}`;
         if(wincount==4) document.querySelector('#walking + div p').innerHTML += `: FINAL`;
         putBoat(y);
         for(let i=0; i<span.length; i++) {
@@ -299,10 +299,8 @@ if(!navigator.onLine) document.querySelector('body').style.backgroundColor = 'bl
 const txts = ['HOW', 'LUCKY', 'ARE', 'YOU?', 'JUST', 'TRY', 'YOUR', 'LUCK!'];
 const mvTxt = document.querySelector('#walking');
 
-if (document.querySelector('.ctnr').offsetParent.offsetWidth > 534) {
-    for(let i=0; i<3; i++){
-        for(let j=0; j<txts.length; j++) creElm(mvTxt, 'p', txts[j]);
-    }
+for(let i=0; i<3; i++){
+    for(let j=0; j<txts.length; j++) creElm(mvTxt, 'p', txts[j]);
 }
 
 
