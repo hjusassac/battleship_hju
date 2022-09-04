@@ -74,10 +74,11 @@ const putBoat = (x) => {
  * @param {number} x limit the size of the coordinate plane to x*x
  */
 const room = (x) => {
+    let containerWidth = document.querySelector('.ctnr').offsetWidth;
     for(let i=1; i<x+1; i++) {
         for(let j=1; j<x+1; j++) creElm(flxCtn, 'span', '', '', 'data-x', j, 'data-y', i);
     }
-    for(let i=0; i<span.length; i++) span[i].style.width = `-webkit-calc((510px/${x} - 2px))`;
+    for(let i=0; i<span.length; i++) span[i].style.width = `-webkit-calc((${containerWidth}px/${x} - 2px))`;
 }
 
 /**
@@ -298,8 +299,10 @@ if(!navigator.onLine) document.querySelector('body').style.backgroundColor = 'bl
 const txts = ['HOW', 'LUCKY', 'ARE', 'YOU?', 'JUST', 'TRY', 'YOUR', 'LUCK!'];
 const mvTxt = document.querySelector('#walking');
 
-for(let i=0; i<3; i++){
-    for(let j=0; j<txts.length; j++) creElm(mvTxt, 'p', txts[j]);
+if (document.querySelector('.ctnr').offsetParent.offsetWidth > 534) {
+    for(let i=0; i<3; i++){
+        for(let j=0; j<txts.length; j++) creElm(mvTxt, 'p', txts[j]);
+    }
 }
 
 
