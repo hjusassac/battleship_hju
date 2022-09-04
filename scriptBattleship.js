@@ -205,7 +205,7 @@ const gameStart =(x, y)=> {
     setTimeout(() => {
         starter.classList.add('hidden');    // Play 버튼 레이어 숨김
         document.querySelector('#hola + div p').innerHTML = `LEVEL ${wincount+1}`;
-        if(wincount==4) document.querySelector('#walking + div p').innerHTML += `: FINAL`;
+        if(wincount==4) document.querySelector('#hola + div p').innerHTML += `: FINAL`;
         putBoat(y);
         for(let i=0; i<span.length; i++) {
             boatAt(i);
