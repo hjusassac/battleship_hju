@@ -7,13 +7,13 @@ assignees: ''
 
 ---
 
-### Expected Behavior
+Expected Behavior
 ---
 
-### Current Behavior
+Current Behavior
 ---
 
-### Context (Enviornment)
+Context (Enviornment)
 ---
 1. page location
 2. attempted to
@@ -21,5 +21,5 @@ assignees: ''
 4. Device/OS/Browser/Version
 5. priority
 
-### Detailed Description
+Detailed Description
 ---
